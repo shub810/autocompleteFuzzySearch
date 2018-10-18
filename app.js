@@ -5,6 +5,7 @@ let time = Date.now();
 let wait = 100;
 let suggestions = [];
 let input_text = "";
+let selectCountLi = 0;
 
 function debounce(e) {
     let newTime = Date.now();
@@ -27,21 +28,20 @@ function autocomplete(e) {
     input_text = (e.target.value).toLowerCase();
 
     country.forEach((c) => {
-        let lc = c.toLowerCase();
-        if (lc.indexOf(input_text) >= 0 && suggestions.indexOf(c) === -1) {
-            suggestions.push(c);
+        c = c.toLowerCase();
+        if (c.indexOf(input_text) >= 0 && suggestions.indexOf(c) === -1) {
+            suggestions.push(c.replace(input_text, '<b>' + input_text + '</b>'));
         }
     });
     createLi(suggestions);
 }
-
 
 function createLi(suggestions) {
     var ul =  document.getElementById('suggestions');
     ul.style.display = 'block';
     var li = '';
     suggestions.forEach((suggestions, index) => {
-        li += '<li id="suggestionList">' + suggestions + '</li>';
+        li += '<li id="suggestionList' + index  + '">' + suggestions + '</li>';
     });
     ul.innerHTML = li;
     let len = suggestions.length;
@@ -65,8 +65,21 @@ function suggestionHandler(e) {
 
 function onKeydownHandler(e) {
     if (e && e.keyCode === 40) {
-
+        // let sugId = document.getElementById(`suggestionList${selectCountLi}`);
+        // if (sugId) {
+        //     sugId.style.background = '#e3e7f7';
+        // }
+        selectCountLi++;
     }
+    else {
+        console.log(selectCountLi);
+        // let sugId = document.getElementById(`suggestionList${selectCountLi}`);
+        // if (sugId) { 
+        //     sugId.style.background = 'none';
+        //     selectCountLi = 0;
+        // }
+    }
+    
     if (e && e.keyCode === 38) {
 
     }
